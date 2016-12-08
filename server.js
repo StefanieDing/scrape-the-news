@@ -2,8 +2,6 @@
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var logger = require('morgan');
-var request = require('request');
-var cheerio = require('cheerio');
 
 //initialize Express app
 var express = require('express');

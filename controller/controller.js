@@ -66,21 +66,9 @@ router.get("/articles", function(req, res) {
   });
 });
 
-// This will grab an article by it's ObjectId
-router.get("/articles/:id", function(req, res) {
-  Article.findOne({ "_id": req.params.id})
-    .populate("comment")
-    .exec(function(err, doc){
-      if(err){
-        console.log(err);
-      } else{
-        res.json(doc);
-      }
-    });
-});
 
-// Create a new note or replace an existing note
-router.post("/articles/:id", function(req, res) {
+// Create a new comment
+router.post("/comment/:id", function(req, res) {
   var newComment = new Comment(req.body);
 
   newComment.save(function(err, doc){
@@ -99,3 +87,5 @@ router.post("/articles/:id", function(req, res) {
     }
   });
 });
+
+module.exports = router;
