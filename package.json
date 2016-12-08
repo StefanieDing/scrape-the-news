@@ -2,19 +2,32 @@
   "name": "scrape-the-news",
   "version": "1.0.0",
   "description": "Created in Week 18 of RCB. Uses Mongoose to Scrape news articles from a site and allows the user to make comments and delete them.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/StefanieDing/scrape-the-news.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Stefanie Ding",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/StefanieDing/scrape-the-news/issues"
   },
-  "homepage": "https://github.com/StefanieDing/scrape-the-news#readme"
+  "homepage": "https://github.com/StefanieDing/scrape-the-news#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cheerio": "^0.22.0",
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^4.7.1",
+    "morgan": "^1.7.0",
+    "request": "^2.79.0"
+  },
+  "engines": {
+    "node": "6.5.0"
+  }
 }
