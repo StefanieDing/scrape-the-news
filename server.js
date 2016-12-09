@@ -23,15 +23,9 @@ app.set('view engine', 'handlebars');
 //connecting to MongoDB
 mongoose.connect('mongodb://localhost/scraped_news');
 var db = mongoose.connection;
-
-//show mongoose errors
-db.on('error', function(error) {
-  console.log('Mongoose Error: ', error);
-});
-
-//once logged into the db through mongoose, log success message
+db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log("Mongoose connected.");
+  console.log('Connected to Mongoose!')
 });
 
 var routes = require('./controller/controller.js');

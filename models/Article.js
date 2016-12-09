@@ -11,7 +11,11 @@ var ArticleSchema = new Schema({
     type: String,
     required: true
   }, 
-  note: {
+  body: {
+    type: String,
+    require: true
+  },
+  comment: {
     type: Schema.Types.ObjectId,
     ref: "Comment"
   }
