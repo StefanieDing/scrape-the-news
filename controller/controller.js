@@ -32,6 +32,13 @@ router.get('/scrape', function(req, res) {
             result.title = $(this).children('a').text();
             result.link = $(this).children('a').attr('href');
 
+            //grab article from article link
+            request(result.link, function(error, response, html) {
+                $('.c-entry-content').each(function(i, element) {
+                    result.body = $(this).children('p').text();
+                });    
+            });
+
             //ensures that no empty title or links are sent to mongodb
             if(result.title !== "" && result.link !== ""){
               //check for duplicates
