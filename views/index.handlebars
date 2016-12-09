@@ -12,7 +12,8 @@
     {{#each article}}
       <div class="card-panel">
         <h4>{{this.title}}</h4>
-        <p>Read article <a href="/readArticle/{{this.id}}">here</a></p>
+        {{!-- links to article, eventually link to another page where i can grab the article from the body of the link --}}
+        <p>Read article <a href="{{this.link}}{{!-- /readArticle/{{this.id}} --}}">here</a></p>
       </div>
     {{/each}}
   </div>
