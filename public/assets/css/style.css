@@ -3,8 +3,15 @@ body{
   background-size: 600px;
   font-family: 'Oswald', sans-serif;
   font-size: 16px;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
-/*.card{
-  padding: 1px;
-}*/
+main{
+  flex: 1 0 auto;
+}
+
+.nav-extended{
+  padding: 3px;
+}
