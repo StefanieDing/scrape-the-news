@@ -157,23 +157,30 @@ router.get('/readArticle/:id', function(req, res){
 
 // Create a new comment
 router.post('/comment/:id', function(req, res) {
-    var newComment = new Comment(req.body);
+  //submitted form
+  var result = {
+    name: req.body.name,
+    body: req.body.comment
+  };
 
-    newComment.save(function(err, doc) {
-        if (err) {
-            console.log(err);
-        } else {
-            Article.findOneAndUpdate({ "_id": req.params.id }, { "comment": doc._id })
-                //execute everything
-                .exec(function(err, doc) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        res.send(doc);
-                    }
-                });
-        }
-    });
+  //using the Comment model, create a new comment
+  var newComment = new Comment(result);
+
+  newComment.save(function(err, doc) {
+      if (err) {
+          console.log(err);
+      } else {
+          Article.findOneAndUpdate({ "_id": req.params.id }, {$push: {'comments':doc._id}}, {new: true})
+              //execute everything
+              .exec(function(err, doc) {
+                  if (err) {
+                      console.log(err);
+                  } else {
+                      res.sendStatus(200);
+                  }
+              });
+      }
+  });
 });
 
 module.exports = router;
