@@ -28,3 +28,11 @@
 </div
 
 {{!-- comments go here --}}
+<div class="row">
+  {{#each article.comment}}
+    <div class="card-panel">
+      <h5>{{name}}</h5>
+      <p>{{comment}}<p>
+    </div
+  {{/each}}
+</div>
