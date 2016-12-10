@@ -13,8 +13,20 @@ var Article = require('../models/Article.js');
 
 //index
 router.get('/', function(req, res) {
-    res.render('index');
+    res.redirect('/articles');
 });
+
+// router.get('/test-scrape', function(req, res) {
+//   request(result.link, function(error, response, html) {
+//     var $ = cheerio.load(html);
+
+//     $('.l-col__main').each(function(i, element){
+//       var result = {};
+
+//       console.log($(this).children('.c-entry-content').children('p').text());
+//     });
+//   });
+// });
 
 // A GET request to scrape the CNN website
 router.get('/scrape', function(req, res) {
@@ -31,13 +43,6 @@ router.get('/scrape', function(req, res) {
             // Add the text and href of every link, and save them as properties of the result object
             result.title = $(this).children('a').text();
             result.link = $(this).children('a').attr('href');
-
-            //grab article from article link
-            request(result.link, function(error, response, html) {
-                $('.c-entry-content').each(function(i, element) {
-                    result.body = $(this).children('p').text();
-                });    
-            });
 
             //ensures that no empty title or links are sent to mongodb
             if(result.title !== "" && result.link !== ""){
@@ -85,12 +90,10 @@ router.get('/scrape', function(req, res) {
 
 //this will grab every article an populate the DOM
 router.get('/articles', function(req, res) {
-    Article.find().sort({_id: 1})
-        //populate comments associated with article
-        .populate('comments')
+    //allows newer articles to be on top
+    Article.find().sort({_id: -1})
         //send to handlebars
         .exec(function(err, doc) {
-            console.log(doc);
             if(err){
                 console.log(err);
             } else{
@@ -125,16 +128,31 @@ router.get('/clearAll', function(req, res) {
 });
 
 router.get('/readArticle/:id', function(req, res){
+  var articleID = req.params.id;
+  var hbsObj = {
+    article: [],
+    body: []
+  }
     //find the article at the id
-    Article.findOne({id: req.params.id})
-        .exec(function(err, doc){
-            if(err){
-                console.log(err);
-            } else{
-               var currentArticle = {curntArt: doc};
-               res.render('article', currentArticle);
-            }
-        });
+    Article.findOne({_id: articleID}, function(err,doc){ 
+      console.log(doc);
+      // hbsObj.article = doc;
+      // var link = hbsObj.article.link;
+      
+      // //grab article from article link
+      // request(link, function(error, response, html) {
+      //   var $ = cheerio.load(html);
+
+      //   $('.l-col__main').each(function(i, element){
+      //     // console.log($(this).children('.c-entry-content').children('p').text());
+      //      hbsObj.body = $(this).children('.c-entry-content').children('p').text();
+      //   });
+      // });
+    });
+
+    //send article body and comments to article.handlbars through hbObj
+    res.render('article', hbsObj);
+
 });
 
 // Create a new comment
@@ -145,7 +163,7 @@ router.post('/comment/:id', function(req, res) {
         if (err) {
             console.log(err);
         } else {
-            Article.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
+            Article.findOneAndUpdate({ "_id": req.params.id }, { "comment": doc._id })
                 //execute everything
                 .exec(function(err, doc) {
                     if (err) {
