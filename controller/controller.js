@@ -135,24 +135,25 @@ router.get('/readArticle/:id', function(req, res){
   }
     //find the article at the id
     Article.findOne({_id: articleID}, function(err,doc){ 
-      console.log(doc);
-      // hbsObj.article = doc;
-      // var link = hbsObj.article.link;
-      
-      // //grab article from article link
-      // request(link, function(error, response, html) {
-      //   var $ = cheerio.load(html);
+      if(err){
+        console.log(err);
+      } else {
+        hbsObj.article = doc;
+        var link = doc.link;
 
-      //   $('.l-col__main').each(function(i, element){
-      //     // console.log($(this).children('.c-entry-content').children('p').text());
-      //      hbsObj.body = $(this).children('.c-entry-content').children('p').text();
-      //   });
-      // });
+        //grab article from article link
+        request(link, function(error, result, html) {
+          var $ = cheerio.load(html);
+
+          $('.l-col__main').each(function(i, element){
+             hbsObj.body = $(this).children('.c-entry-content').children('p').text();
+             //console.log(hbsObj.body);
+             //send article body and comments to article.handlbars through hbObj
+             res.render('article', hbsObj);
+          });
+        });
+      }
     });
-
-    //send article body and comments to article.handlbars through hbObj
-    res.render('article', hbsObj);
-
 });
 
 // Create a new comment
