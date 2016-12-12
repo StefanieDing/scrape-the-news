@@ -147,7 +147,6 @@ router.get('/readArticle/:id', function(req, res){
 
           $('.l-col__main').each(function(i, element){
             hbsObj.body = $(this).children('.c-entry-content').children('p').text();
-            console.log('renders here');
             //send article body and comments to article.handlbars through hbObj
             res.render('article', hbsObj);
             //prevents loop through so it doesn't return an empty hbsObj.body
@@ -166,7 +165,7 @@ router.post('/comment/:id', function(req, res) {
     name: req.body.name,
     body: req.body.comment
   };
-
+  console.log('Comment: ' + result);
   //using the Comment model, create a new comment
   var newComment = new Comment(result);
 
