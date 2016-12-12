@@ -175,15 +175,15 @@ router.post('/comment/:id', function(req, res) {
           console.log(err);
       } else {
           Article.findOneAndUpdate({ "_id": req.params.id }, {$push: {'comments':doc._id}}, {new: true})
-              //execute everything
-              .exec(function(err, doc) {
-                  if (err) {
-                      console.log(err);
-                  } else {
-                      res.sendStatus(200);
-                  }
-              });
-      }
+            //execute everything
+            .exec(function(err, doc) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.redirect('/readArticle/' + req.params.id);
+                }
+            });
+        }
   });
 });
 
