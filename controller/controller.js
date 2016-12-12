@@ -160,34 +160,31 @@ router.get('/readArticle/:id', function(req, res){
 
 // Create a new comment
 router.post('/comment/:id', function(req, res) {
-  var user = req.body.name;
-  var content = req.body.test;
-  var articleId = req.params.id;
-
   //submitted form
-  var result = {
-    name: user,
-    body: content
-  };
+  var result = {};
+  var articleId = req.params.id;
+  result.name = req.body.name;
+  result.body = req.body.test;
+  
   console.log('Comment: ' + result);
   //using the Comment model, create a new comment
-  var newComment = new Comment(result);
+  // var newComment = new Comment(result);
 
-  newComment.save(function(err, doc) {
-      if (err) {
-          console.log(err);
-      } else {
-          Article.findOneAndUpdate({ "_id": articleId }, {$push: {'comments':doc._id}}, {new: true})
-            //execute everything
-            .exec(function(err, doc) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.redirect('/readArticle/' + articleId);
-                }
-            });
-        }
-  });
+  // newComment.save(function(err, doc) {
+  //     if (err) {
+  //         console.log(err);
+  //     } else {
+  //         Article.findOneAndUpdate({ "_id": articleId }, {$push: {'comments':doc._id}}, {new: true})
+  //           //execute everything
+  //           .exec(function(err, doc) {
+  //               if (err) {
+  //                   console.log(err);
+  //               } else {
+  //                   res.redirect('/readArticle/' + articleId);
+  //               }
+  //           });
+  //       }
+  // });
 });
 
 module.exports = router;

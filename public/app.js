@@ -30,20 +30,20 @@ $(document).on("click", "p", function() {
       // A textarea to add a new note body
       $("#comments").append("<textarea id='bodyinput' name='body'></textarea>");
       // A button to submit a new note, with the id of the article saved to it
-      $("#comments").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      $("#comments").append("<button data-id='" + data._id + "' id='savecomment'>Save Comment</button>");
 
       // If there's a note in the article
-      if (data.note) {
+      if (data.comment) {
         // Place the title of the note in the title input
-        $("#titleinput").val(data.note.title);
+        $("#titleinput").val(data.comment.name);
         // Place the body of the note in the body textarea
-        $("#bodyinput").val(data.note.body);
+        $("#bodyinput").val(data.comment.body);
       }
     });
 });
 
 // When you click the savenote button
-$(document).on("click", "#savenote", function() {
+$(document).on("click", "#savecomment", function() {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
