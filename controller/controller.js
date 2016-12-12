@@ -83,9 +83,9 @@ router.get('/scrape', function(req, res) {
             console.log('Not saved to DB, missing data')
           }
         });
+        // after scrape, redirects to index
+        res.redirect('/');
     });
-    // after scrape, redirects to index
-    res.redirect('/articles');
 });
 
 //this will grab every article an populate the DOM
@@ -132,7 +132,7 @@ router.get('/readArticle/:id', function(req, res){
   var hbsObj = {
     article: [],
     body: []
-  }
+  };
     //find the article at the id
     Article.findOne({_id: articleID}, function(err,doc){ 
       if(err){
@@ -142,14 +142,14 @@ router.get('/readArticle/:id', function(req, res){
         var link = doc.link;
 
         //grab article from article link
-        request(link, function(error, result, html) {
+        request(link, function(error, response, html) {
           var $ = cheerio.load(html);
 
           $('.l-col__main').each(function(i, element){
              hbsObj.body = $(this).children('.c-entry-content').children('p').text();
-             //console.log(hbsObj.body);
+            console.log(hbsObj);
              //send article body and comments to article.handlbars through hbObj
-             res.render('article', hbsObj);
+             //res.render('article', hbsObj);
           });
         });
       }
