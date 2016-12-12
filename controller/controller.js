@@ -128,31 +128,34 @@ router.get('/clearAll', function(req, res) {
 });
 
 router.get('/readArticle/:id', function(req, res){
-  var articleID = req.params.id;
+  var articleId = req.params.id;
   var hbsObj = {
     article: [],
     body: []
   };
-    //find the article at the id
-    Article.findOne({_id: articleID}, function(err,doc){ 
+
+    // //find the article at the id
+    Article.findOne({ _id: articleId }, function(err, doc){
       if(err){
         console.log(err);
       } else {
         hbsObj.article = doc;
         var link = doc.link;
-
-        //grab article from article link
+        //grab article from link
         request(link, function(error, response, html) {
           var $ = cheerio.load(html);
 
           $('.l-col__main').each(function(i, element){
-             hbsObj.body = $(this).children('.c-entry-content').children('p').text();
-            console.log(hbsObj);
-             //send article body and comments to article.handlbars through hbObj
-             //res.render('article', hbsObj);
+            hbsObj.body = $(this).children('.c-entry-content').children('p').text();
+            console.log('renders here');
+            //send article body and comments to article.handlbars through hbObj
+            res.render('article', hbsObj);
+            //prevents loop through so it doesn't return an empty hbsObj.body
+            return false;
           });
         });
       }
+
     });
 });
 
