@@ -128,42 +128,48 @@ router.get('/clearAll', function(req, res) {
 });
 
 router.get('/readArticle/:id', function(req, res){
-  var articleID = req.params.id;
+  var articleId = req.params.id;
   var hbsObj = {
     article: [],
     body: []
   };
-    //find the article at the id
-    Article.findOne({_id: articleID}, function(err,doc){ 
+
+    // //find the article at the id
+    Article.findOne({ _id: articleId }, function(err, doc){
       if(err){
-        console.log(err);
+        console.log('Error: ' + err);
       } else {
         hbsObj.article = doc;
         var link = doc.link;
-
-        //grab article from article link
+        //grab article from link
         request(link, function(error, response, html) {
           var $ = cheerio.load(html);
 
           $('.l-col__main').each(function(i, element){
-             hbsObj.body = $(this).children('.c-entry-content').children('p').text();
-            console.log(hbsObj);
-             //send article body and comments to article.handlbars through hbObj
-             //res.render('article', hbsObj);
+            hbsObj.body = $(this).children('.c-entry-content').children('p').text();
+            //send article body and comments to article.handlbars through hbObj
+            res.render('article', hbsObj);
+            //prevents loop through so it doesn't return an empty hbsObj.body
+            return false;
           });
         });
       }
+
     });
 });
 
 // Create a new comment
 router.post('/comment/:id', function(req, res) {
+  var user = req.body.name;
+  var content = req.body.test;
+  var articleId = req.params.id;
+
   //submitted form
   var result = {
-    name: req.body.name,
-    body: req.body.comment
+    name: user,
+    body: content
   };
-
+  console.log('Comment: ' + result);
   //using the Comment model, create a new comment
   var newComment = new Comment(result);
 
@@ -171,16 +177,16 @@ router.post('/comment/:id', function(req, res) {
       if (err) {
           console.log(err);
       } else {
-          Article.findOneAndUpdate({ "_id": req.params.id }, {$push: {'comments':doc._id}}, {new: true})
-              //execute everything
-              .exec(function(err, doc) {
-                  if (err) {
-                      console.log(err);
-                  } else {
-                      res.sendStatus(200);
-                  }
-              });
-      }
+          Article.findOneAndUpdate({ "_id": articleId }, {$push: {'comments':doc._id}}, {new: true})
+            //execute everything
+            .exec(function(err, doc) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.redirect('/readArticle/' + articleId);
+                }
+            });
+        }
   });
 });
 
