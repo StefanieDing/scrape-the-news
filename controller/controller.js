@@ -137,7 +137,7 @@ router.get('/readArticle/:id', function(req, res){
     // //find the article at the id
     Article.findOne({ _id: articleId }, function(err, doc){
       if(err){
-        console.log(err);
+        console.log('Error: ' + err);
       } else {
         hbsObj.article = doc;
         var link = doc.link;
@@ -160,10 +160,14 @@ router.get('/readArticle/:id', function(req, res){
 
 // Create a new comment
 router.post('/comment/:id', function(req, res) {
+  var user = req.body.name;
+  var content = req.body.test;
+  var articleId = req.params.id;
+
   //submitted form
   var result = {
-    name: req.body.name,
-    body: req.body.comment
+    name: user,
+    body: content
   };
   console.log('Comment: ' + result);
   //using the Comment model, create a new comment
@@ -173,13 +177,13 @@ router.post('/comment/:id', function(req, res) {
       if (err) {
           console.log(err);
       } else {
-          Article.findOneAndUpdate({ "_id": req.params.id }, {$push: {'comments':doc._id}}, {new: true})
+          Article.findOneAndUpdate({ "_id": articleId }, {$push: {'comments':doc._id}}, {new: true})
             //execute everything
             .exec(function(err, doc) {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.redirect('/readArticle/' + req.params.id);
+                    res.redirect('/readArticle/' + articleId);
                 }
             });
         }
