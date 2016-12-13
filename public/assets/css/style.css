@@ -16,6 +16,7 @@ main{
   height: 200px;
   font-size: 20px;
   overflow-y: scroll;
+  line-height: 150%;
 }
 
 #nameComment{
@@ -35,7 +36,7 @@ main{
  box-shadow: 0 1px 0 0 #000;
 }
 /* icon prefix focus color */
-   .input-field .prefix.active {
-     color: #ec407a;
-   }
+.input-field .prefix.active {
+ color: #ec407a;
+}
 
