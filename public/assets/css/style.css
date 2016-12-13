@@ -18,6 +18,12 @@ main{
   overflow-y: scroll;
 }
 
+#nameComment{
+  /*border-bottom: 2px solid #ec407a;*/
+  font-weight: bold;
+  background: #ec407a;
+  color: white;
+}
 
 /* label focus color */
 .input-field input[type=text]:focus + label {
