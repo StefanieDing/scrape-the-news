@@ -28,4 +28,8 @@ main{
  border-bottom: 1px solid #e91e63;
  box-shadow: 0 1px 0 0 #000;
 }
+/* icon prefix focus color */
+   .input-field .prefix.active {
+     color: #ec407a;
+   }
 
